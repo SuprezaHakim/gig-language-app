@@ -1,7 +1,18 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, TouchableOpacity, SafeAreaView } from 'react-native';
+import * as Speech from 'expo-speech'; //imported the speech library here
 
 export default function App() {
+
+  // This is the function that controls the hardware voice
+  const speakPhrase = (textToSay: string) => {
+    Speech.stop(); // Stops any current audio
+    Speech.speak(textToSay, {
+      language: 'en-US',
+      rate: 0.9, // Slightly slower for language learners
+    });
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       
@@ -11,11 +22,15 @@ export default function App() {
         <Text style={styles.subtitle}>DoorDash Driver Track</Text>
       </View>
 
-      {/* 80/20 Daily Mission Card */}
-      <View style={styles.missionCard}>
+      {/* 80/20 Daily Mission Card - Now clickable! */}
+      <TouchableOpacity 
+        style={styles.missionCard}
+        onPress={() => speakPhrase("How is your day going?")}
+      >
         <Text style={styles.missionTitle}>Today's Mission</Text>
         <Text style={styles.missionText}>Ask one restaurant worker: "How is your day going?"</Text>
-      </View>
+        <Text style={styles.hintText}>Tap card to listen 🔊</Text>
+      </TouchableOpacity>
 
       {/* Main Action Buttons */}
       <TouchableOpacity style={styles.button}>
@@ -75,6 +90,12 @@ const styles = StyleSheet.create({
     color: '#2D3748',
     lineHeight: 26,
     fontWeight: '500',
+  },
+  hintText: { 
+    fontSize: 14, 
+    color: '#3182CE', 
+    marginTop: 15, 
+    fontWeight: '600' 
   },
   button: {
     backgroundColor: '#3182CE', 
